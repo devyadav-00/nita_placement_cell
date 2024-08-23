@@ -709,6 +709,11 @@ p {
   text-transform: capitalize;
   font-weight: 400;
 }
+.jobDetail .container .banner p div {
+  color: #18191c;
+  font-weight: 400;
+  margin-left: 30px;
+}
 .jobDetail .container .banner a {
   background-color: #2d5649;
   color: rgb(233, 249, 255);

@@ -126,7 +126,7 @@ export const deleteJob = catchAsyncErrors(async (req, res, next) => {
 export const getSingleJob = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;
   try {
-    const job = await Job.findById(id);
+    const job = await Job.findById(id).populate("postedBy", "name email phone");
     if (!job) {
       return next(new ErrorHandler("Job not found.", 404));
     }

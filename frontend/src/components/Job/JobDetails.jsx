@@ -11,17 +11,22 @@ const JobDetails = () => {
   const { isAuthorized, user } = useContext(Context);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:4000/api/v1/job/${id}`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        setJob(res.data.job);
-      })
-      .catch((error) => {
-        navigateTo("/notfound");
-      });
+    const fetch = () => {
+      axios
+        .get(`http://localhost:4000/api/v1/job/${id}`, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          setJob(res.data.job);
+        })
+        .catch((error) => {
+          navigateTo("/notfound");
+        });
+    };
+    fetch();
   }, []);
+
+  console.log("job", job);
 
   if (!isAuthorized) {
     navigateTo("/login");
@@ -62,6 +67,13 @@ const JobDetails = () => {
                 {job.salaryFrom} - {job.salaryTo}
               </span>
             )}
+          </p>
+          <p>
+            Posted By:{" "}
+            <div>
+              {job?.postedBy?.name} <br /> {job?.postedBy?.email} <br />{" "}
+              {job?.postedBy?.phone}
+            </div>
           </p>
           {user && user.role === "Employer" ? (
             <></>
