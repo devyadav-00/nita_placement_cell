@@ -1,25 +1,34 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, Suspense, lazy } from "react";
 import "./App.css";
 import { Context } from "./main";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from "./components/Auth/Login";
-import Register from "./components/Auth/Register";
 import { Toaster } from "react-hot-toast";
 import axios from "axios";
+import LoaderPage from "./components/Loader/LoaderPage.jsx";
 import Navbar from "./components/Layout/Navbar";
 import Footer from "./components/Layout/Footer";
-import Home from "./components/Home/Home";
-import Jobs from "./components/Job/Jobs";
-import JobDetails from "./components/Job/JobDetails";
-import Application from "./components/Application/Application";
-import MyApplications from "./components/Application/MyApplications";
-import PostJob from "./components/Job/PostJob";
-import NotFound from "./components/NotFound/NotFound";
-import MyJobs from "./components/Job/MyJobs";
-import JobApplications from "./components/Application/JobApplications";
+
+const Login = lazy(() => import("./components/Auth/Login"));
+const Register = lazy(() => import("./components/Auth/Register"));
+// const Navbar = lazy(() => import("./components/Layout/Navbar"));
+// const Footer = lazy(() => import("./components/Layout/Footer"));
+const Home = lazy(() => import("./components/Home/Home"));
+const Jobs = lazy(() => import("./components/Job/Jobs"));
+const JobDetails = lazy(() => import("./components/Job/JobDetails"));
+const Application = lazy(() => import("./components/Application/Application"));
+const MyApplications = lazy(() =>
+  import("./components/Application/MyApplications")
+);
+const PostJob = lazy(() => import("./components/Job/PostJob"));
+const NotFound = lazy(() => import("./components/NotFound/NotFound"));
+const MyJobs = lazy(() => import("./components/Job/MyJobs"));
+const JobApplications = lazy(() =>
+  import("./components/Application/JobApplications")
+);
 
 const App = () => {
   const { isAuthorized, setIsAuthorized, setUser } = useContext(Context);
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -42,21 +51,23 @@ const App = () => {
     <>
       <BrowserRouter>
         <Navbar />
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/job/getall" element={<Jobs />} />
-          <Route path="/job/:id" element={<JobDetails />} />
-          <Route path="/application/:id" element={<Application />} />
-          <Route path="/applications/me" element={<MyApplications />} />
-          <Route path="/applications/:jobId" element={<JobApplications />} />
-          <Route path="/job/post" element={<PostJob />} />
-          <Route path="/job/me" element={<MyJobs />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={<LoaderPage />}>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/job/getall" element={<Jobs />} />
+            <Route path="/job/:id" element={<JobDetails />} />
+            <Route path="/application/:id" element={<Application />} />
+            <Route path="/applications/me" element={<MyApplications />} />
+            <Route path="/applications/:jobId" element={<JobApplications />} />
+            <Route path="/job/post" element={<PostJob />} />
+            <Route path="/job/me" element={<MyJobs />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Toaster />
+        </Suspense>
         <Footer />
-        <Toaster />
       </BrowserRouter>
     </>
   );
