@@ -27,6 +27,7 @@ const JobApplications = lazy(() =>
 );
 
 const App = () => {
+  //// very nice
   const { isAuthorized, setIsAuthorized, setUser } = useContext(Context);
 
 
