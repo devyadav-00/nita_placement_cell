@@ -29,6 +29,8 @@ const JobApplications = lazy(() =>
 const App = () => {
   const { isAuthorized, setIsAuthorized, setUser } = useContext(Context);
 
+
+  // nice
   useEffect(() => {
     const fetchUser = async () => {
       try {
